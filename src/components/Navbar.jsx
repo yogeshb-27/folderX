@@ -1,7 +1,20 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import toast from "react-hot-toast";
 
 export default function Navbar() {
+  const { token, logout } = useAuth();
+  const navigate = useNavigate();
+  const handleLogOut = async () => {
+    try {
+      logout(); // from context
+      toast.success("Log out successful");
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary border-bottom">
       <div className="container">
@@ -45,24 +58,53 @@ export default function Navbar() {
             >
               About
             </NavLink>
+            {token && (
+              <>
+                <NavLink
+                  className={({ isActive }) =>
+                    `nav-link me-5 ps-lg-3 ${isActive ? "text-primary" : ""}`
+                  }
+                  aria-current="page"
+                  to="/dashboard"
+                >
+                  Dashboard
+                </NavLink>
+              </>
+            )}
           </div>
-
-          <NavLink
-            className={({ isActive }) =>
-              `nav-link me-5 mb-2 mb-lg-0 ${isActive ? "d-none" : ""}`
-            }
-            to="/login"
-          >
-            LogIn
-          </NavLink>
-          <NavLink
-            className={({ isActive }) =>
-              `nav-link me-5 ${isActive ? "d-none" : ""}`
-            }
-            to="/register"
-          >
-            Register
-          </NavLink>
+          {token ? (
+            <>
+              <button
+                className={`nav-link text-danger me-5 my-1 `}
+                onClick={handleLogOut}
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <NavLink
+                className={({ isActive }) =>
+                  `nav-link text-secondary me-5  py-1  ${
+                    isActive ? "d-none" : ""
+                  }`
+                }
+                to="/login"
+              >
+                LogIn
+              </NavLink>
+              <NavLink
+                className={({ isActive }) =>
+                  `nav-link text-secondary me-5 py-1 ${
+                    isActive ? "d-none" : ""
+                  }`
+                }
+                to="/register"
+              >
+                Register
+              </NavLink>
+            </>
+          )}
         </div>
       </div>
     </nav>
