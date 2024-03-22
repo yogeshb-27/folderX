@@ -27,7 +27,29 @@ const FileList = () => {
       console.error(error);
     }
   };
-
+  const handleDownloadFileClick = async (fileId, fileName) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}file/download/${fileId}`,
+        {
+          responseType: "blob",
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const blob = new Blob([response.data]);
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.setAttribute("download", fileName);
+      link.click();
+      toast.success("File downloaded successfully");
+    } catch (error) {
+      console.error("Error downloading file:", error);
+      toast.error("Error downloading file. Please try again later.");
+    }
+  };
   return (
     <div className="files p-3 m-3 p-3 bg-body-secondary rounded table-responsive">
       <table className="table table-striped">
@@ -61,6 +83,14 @@ const FileList = () => {
                   title="Delete File"
                   tabIndex={0}
                   onClick={() => handleDeleteFileClick(file._id)}
+                ></i>
+                <i
+                  className="bx bx-download text-muted cursor-pointer"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  title="Download File"
+                  tabIndex={0}
+                  onClick={() => handleDownloadFileClick(file._id, file.name)}
                 ></i>
               </td>
             </tr>
