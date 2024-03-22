@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useDropzone } from "react-dropzone";
+import { formatFileSize } from "../Utils/FileUtils";
 
 const UploadFileModal = ({
   show,
@@ -101,7 +102,7 @@ const UploadFileModal = ({
             {file && (
               <div className="mt-3">
                 <p className="mb-1">{file.name}</p>
-                <p className="mb-1">Size: {file.size}</p>
+                <p className="mb-1">Size: {formatFileSize(file.size)}</p>
                 <div className="progress">
                   <div
                     className="progress-bar bg-success"
