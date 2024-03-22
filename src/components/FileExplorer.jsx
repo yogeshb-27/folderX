@@ -15,6 +15,9 @@ const FileExplorer = ({ contents, fetchFolderContents, currentFolderId }) => {
   const handleUploadFileClick = () => {
     setShowUploadFileModal(true);
   };
+  const handleFolderClick = (folderId) => {
+    fetchFolderContents(folderId);
+  };
   return (
     <div className="col-lg-9">
       <div className="container">
@@ -52,6 +55,7 @@ const FileExplorer = ({ contents, fetchFolderContents, currentFolderId }) => {
               {folders?.map((folder) => (
                 <div
                   key={folder._id}
+                  onClick={() => handleFolderClick(folder._id)}
                   className="col-12 col-sm-6 col-md-4 col-lg-3 folder"
                 >
                   <i className="bx bxs-folder text-warning"></i>
