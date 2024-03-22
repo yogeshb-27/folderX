@@ -44,11 +44,25 @@ const FileExplorer = ({ contents, fetchFolderContents, currentFolderId }) => {
             Start adding files and folders to fill this space.
           </p>
         )}
-        <ul>
-          {folders?.map((folder, index) => (
-            <li key={index}>{folder.name}</li>
-          ))}
-        </ul>
+
+        {/* folders */}
+        {folders?.length > 0 ? (
+          <div className="m-3 p-3 bg-body-secondary rounded ">
+            <div className="row mt-lg-3">
+              {folders?.map((folder) => (
+                <div
+                  key={folder._id}
+                  className="col-12 col-sm-6 col-md-4 col-lg-3 folder"
+                >
+                  <i className="bx bxs-folder text-warning"></i>
+                  <p className="text-center text-capitalize">{folder.name}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
         <ul>
           {files?.map((file, index) => (
             <li key={index}>{file.name}</li>
