@@ -3,6 +3,7 @@ import CreateFolderModal from "./CreateFolderModal";
 import UploadFileModal from "./UploadFileModal";
 import { useFolder } from "../context/FolderContext";
 import RenameFolderModal from "./RenameFolderModal";
+import FileList from "./FileList";
 
 const FileExplorer = () => {
   const {
@@ -77,7 +78,7 @@ const FileExplorer = () => {
             )}
 
             {/* folders */}
-            {folders?.length > 0 ? (
+            {folders?.length > 0 && (
               <div className="m-3 p-3 bg-body-secondary rounded ">
                 <div className="row mt-lg-3">
                   {folders?.map((folder) => (
@@ -94,14 +95,8 @@ const FileExplorer = () => {
                   ))}
                 </div>
               </div>
-            ) : (
-              ""
             )}
-            <ul>
-              {files?.map((file, index) => (
-                <li key={index}>{file.name}</li>
-              ))}
-            </ul>
+            {files?.length > 0 && <FileList />}
           </div>
 
           <CreateFolderModal
