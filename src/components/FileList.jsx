@@ -1,12 +1,12 @@
 import React from "react";
-import { formatFileSize } from "../Utils/FileUtils";
+import { formatFileSize, getFileIcon } from "../Utils/FileUtils";
 import { useFolder } from "../context/FolderContext";
 
 const FileList = () => {
   const { contents } = useFolder();
   const { files } = contents;
   return (
-    <div className="files m-3 p-3 bg-white rounded my-4 table-responsive">
+    <div className="files p-3 m-3 p-3 bg-body-secondary rounded table-responsive">
       <table className="table table-striped">
         <thead>
           <tr>
@@ -25,7 +25,7 @@ const FileList = () => {
                 tabIndex={0}
                 title={`${file.name}`}
               >
-                {file.type} {file.name}
+                {getFileIcon(file.type)} {file.name}
               </td>
               <td>{file.type}</td>
               <td>{formatFileSize(file.size)}</td>
