@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { formatFileSize, getFileIcon } from "../Utils/FileUtils";
 import { useFolder } from "../context/FolderContext";
 import toast from "react-hot-toast";
+import RenameFileModal from "./RenameFileModal";
 
 const FileList = () => {
   const { contents, currentFolderId, fetchFolderContents } = useFolder();
   const { files } = contents;
+  const [showRenameFileModal, setShowRenameFileModal] = useState(false);
+  const [selectedFileId, setSelectedFileId] = useState(null);
+
+  const handleRenameFileClick = (fileId) => {
+    setSelectedFileId(fileId);
+    setShowRenameFileModal(true);
+  };
 
   const handleDeleteFileClick = async (fileId) => {
     try {
@@ -77,6 +85,14 @@ const FileList = () => {
               <td>{formatFileSize(file.size)}</td>
               <td>
                 <i
+                  className="bx bx-rename text-muted cursor-pointer me-2"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  title="Rename File"
+                  tabIndex={0}
+                  onClick={() => handleRenameFileClick(file._id)}
+                ></i>
+                <i
                   className="bx bx-trash-alt text-danger cursor-pointer me-2"
                   data-bs-toggle="tooltip"
                   data-bs-placement="top"
@@ -97,6 +113,16 @@ const FileList = () => {
           ))}
         </tbody>
       </table>
+      {/* Rename File Modal */}
+      {selectedFileId !== null && (
+        <RenameFileModal
+          show={showRenameFileModal}
+          onHide={() => setShowRenameFileModal(false)}
+          folderId={currentFolderId}
+          fileId={selectedFileId}
+          fetchFolderContents={fetchFolderContents}
+        />
+      )}
     </div>
   );
 };
