@@ -10,6 +10,7 @@ import { Toaster } from "react-hot-toast";
 import About from "./pages/About";
 import { AuthProvider } from "./context/AuthContext";
 import { FolderProvider } from "./context/FolderContext";
+import FilePreview from "./pages/FilePreview";
 const App = () => {
   return (
     <Router>
@@ -23,6 +24,7 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/about" element={<About />} />
+            <Route path="/file-preview/:fileId" element={<FilePreview />} />
           </Routes>
         </FolderProvider>
       </AuthProvider>

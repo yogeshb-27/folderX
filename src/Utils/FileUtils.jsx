@@ -81,3 +81,82 @@ export const getFileIcon = (fileType) => {
       return <i className="bx bx-file-blank "></i>;
   }
 };
+
+export const textFileTypes = [
+  "txt",
+  "md",
+  "html",
+  "css",
+  "js",
+  "ts",
+  "json",
+  "xml",
+  "log",
+  "csv",
+  "sql",
+  "php",
+  "py",
+  "java",
+  "c",
+  "r",
+  "cs",
+  "go",
+  "cmd",
+  "cpp",
+  "h",
+  "rb",
+  "sh",
+  "jsx",
+  "conf",
+  "tsx",
+  "gitignore",
+  "svg",
+  "ejs",
+  "env",
+];
+export const languageMap = {
+  txt: "plaintext",
+  md: "markdown",
+  html: "html",
+  css: "css",
+  js: "javascript",
+  ts: "typescript",
+  json: "json",
+  xml: "xml",
+  log: "plaintext",
+  csv: "plaintext",
+  sql: "sql",
+  php: "php",
+  py: "python",
+  java: "java",
+  c: "c",
+  r: "r",
+  cs: "csharp",
+  go: "go",
+  cmd: "plaintext",
+  env: "plaintext",
+  cpp: "cpp",
+  h: "cpp",
+  rb: "ruby",
+  sh: "bash",
+  jsx: "jsx",
+  conf: "plaintext",
+  tsx: "typescript",
+  gitignore: "plaintext",
+  svg: "xml",
+  ejs: "ejs",
+};
+
+export const audioFileTypes = ["mp3", "wav", "ogg", "aac", "flac"];
+
+export const videoFileTypes = ["mp4", "avi", "mkv", "mov", "wmv"];
+
+export const imageFileTypes = [
+  "jpg",
+  "jpeg",
+  "gif",
+  "webp",
+  "png",
+  "ico",
+  "svg",
+];

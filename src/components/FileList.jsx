@@ -1,11 +1,20 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { formatFileSize, getFileIcon } from "../Utils/FileUtils";
 import { useFolder } from "../context/FolderContext";
 import toast from "react-hot-toast";
 import RenameFileModal from "./RenameFileModal";
+import { useNavigate } from "react-router-dom";
+import {
+  getFileIcon,
+  formatFileSize,
+  textFileTypes,
+  imageFileTypes,
+  videoFileTypes,
+  audioFileTypes,
+} from "../Utils/FileUtils";
 
 const FileList = () => {
+  const navigate = useNavigate();
   const { contents, currentFolderId, fetchFolderContents } = useFolder();
   const { files } = contents;
   const [showRenameFileModal, setShowRenameFileModal] = useState(false);
@@ -29,12 +38,13 @@ const FileList = () => {
         }
       );
       toast.success(response.data.message);
-      fetchFolderContents(currentFolderId); // Refresh folder contents after successful file deletion
+      fetchFolderContents(currentFolderId);
     } catch (error) {
       toast.error("Error deleting file");
       console.error(error);
     }
   };
+
   const handleDownloadFileClick = async (fileId, fileName) => {
     try {
       const response = await axios.get(
@@ -58,6 +68,20 @@ const FileList = () => {
       toast.error("Error downloading file. Please try again later.");
     }
   };
+
+  const previewFileSupported = [
+    "pdf",
+    ...textFileTypes,
+    ...videoFileTypes,
+    ...imageFileTypes,
+    ...audioFileTypes,
+  ];
+  const handleFileClick = (fileId, fileType) => {
+    previewFileSupported.includes(fileType)
+      ? navigate(`/file-preview/${fileId}`)
+      : toast.error("File Preview Not Available");
+  };
+
   return (
     <div className="files p-3 m-3 p-3 bg-body-secondary rounded table-responsive">
       <table className="table table-striped">
@@ -78,6 +102,7 @@ const FileList = () => {
                 data-bs-placement="top"
                 tabIndex={0}
                 title={`${file.name}`}
+                onClick={() => handleFileClick(file._id, file.type)}
               >
                 {getFileIcon(file.type)} {file.name}
               </td>

@@ -4,6 +4,8 @@ import UploadFileModal from "./UploadFileModal";
 import { useFolder } from "../context/FolderContext";
 import RenameFolderModal from "./RenameFolderModal";
 import FileList from "./FileList";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const FileExplorer = () => {
   const {
@@ -12,12 +14,34 @@ const FileExplorer = () => {
     folderStack,
     fetchFolderContents,
     handleBackButtonClick,
+    currentFolderId,
   } = useFolder();
   const { folders, files, folderName } = contents;
 
   const [showCreateFolderModal, setShowCreateFolderModal] = useState(false);
   const [showRenameFolderModal, setShowRenameFolderModal] = useState(false);
   const [showUploadFileModal, setShowUploadFileModal] = useState(false);
+
+  const handleDeleteFolderClick = async () => {
+    try {
+      const response = await axios.delete(
+        `${import.meta.env.VITE_API_URL}folder/${currentFolderId}`,
+        {
+          data: { parentFolderId: folderStack[folderStack.length - 1] },
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      toast.success(response.data.message);
+      handleBackButtonClick();
+    } catch (error) {
+      toast.error("Error deleting folder");
+      console.error(error);
+    }
+  };
+
   return (
     <div className="col-lg-9">
       {loading ? (
@@ -38,7 +62,7 @@ const FileExplorer = () => {
                 <li className="nav-item my-2">
                   <button
                     className="nav-link d-block"
-                    onClick={() => setShowUploadFileModal(true)}
+                    onClick={() => setShowCreateFolderModal(true)}
                   >
                     <i className="bx bx-folder"></i> Create Folder
                   </button>
@@ -52,16 +76,24 @@ const FileExplorer = () => {
                   <i className="bx bxs-folder-open text-warning"></i>{" "}
                   {folderName}
                 </h2>
-                <>
+                <div>
                   <i
-                    className="bx bx-rename text-muted cursor-pointer me-2"
+                    className="bx bx-rename text-muted cursor-pointer me-3"
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     title="Rename Folder"
                     onClick={() => setShowRenameFolderModal(true)}
                     tabIndex={0}
                   ></i>
-                </>
+                  <i
+                    className="bx bx-trash text-danger cursor-pointer me-2"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    title="Delete Folder"
+                    tabIndex={0}
+                    onClick={handleDeleteFolderClick}
+                  ></i>
+                </div>
                 <button
                   className="btn btn-link text-decoration-none text-dark "
                   onClick={handleBackButtonClick}
