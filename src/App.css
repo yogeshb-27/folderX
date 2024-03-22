@@ -52,3 +52,19 @@ input,textarea,select,.margin{
   transform: translateY(-50%);
   cursor: pointer;
 }
+
+.dropzone {
+  width: 250px; 
+  height: 250px;
+  border: 2px dashed #777; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: border 0.3s ease;
+  text-align: center;
+}
+
+.dropzone .active {
+  border: 2px dashed #333; 
+}

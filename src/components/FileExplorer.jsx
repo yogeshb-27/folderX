@@ -1,20 +1,33 @@
 import React, { useState } from "react";
 
 import CreateFolderModal from "./CreateFolderModal";
+import UploadFileModal from "./UploadFileModal";
 
 const FileExplorer = ({ contents, fetchFolderContents, currentFolderId }) => {
   const { folders, files } = contents;
 
   const [showCreateFolderModal, setShowCreateFolderModal] = useState(false);
+  const [showUploadFileModal, setShowUploadFileModal] = useState(false);
 
   const handleCreateFolderClick = () => {
     setShowCreateFolderModal(true);
+  };
+  const handleUploadFileClick = () => {
+    setShowUploadFileModal(true);
   };
   return (
     <div className="col-lg-9">
       <div className="container">
         <nav className=" d-flex justify-content-center align-items-center px-2 px-lg-4">
           <ul className="nav mt-3 flex-column flex-sm-row">
+            <li className="nav-item my-2">
+              <button
+                className="nav-link d-block"
+                onClick={handleUploadFileClick}
+              >
+                <i className="bx bx-cloud-upload"></i> Upload Files
+              </button>
+            </li>
             <li className="nav-item my-2">
               <button
                 className="nav-link d-block"
@@ -46,6 +59,13 @@ const FileExplorer = ({ contents, fetchFolderContents, currentFolderId }) => {
       <CreateFolderModal
         show={showCreateFolderModal}
         onHide={() => setShowCreateFolderModal(false)}
+        parentFolderId={currentFolderId}
+        fetchFolderContents={fetchFolderContents}
+      />
+
+      <UploadFileModal
+        show={showUploadFileModal}
+        onHide={() => setShowUploadFileModal(false)}
         parentFolderId={currentFolderId}
         fetchFolderContents={fetchFolderContents}
       />
