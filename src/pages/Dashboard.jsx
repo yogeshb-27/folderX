@@ -10,7 +10,8 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [contents, setContents] = useState({});
   const [loading, setLoading] = useState(false);
-  const [currentFolderId, setCurrentFolderId] = useState("root");
+  const [currentFolderId, setCurrentFolderId] = useState();
+  const [folderStack, setFolderStack] = useState([]);
 
   useEffect(() => {
     if (!token) {
@@ -19,7 +20,7 @@ const Dashboard = () => {
   }, [token, navigate]);
 
   useEffect(() => {
-    fetchFolderContents(currentFolderId);
+    fetchFolderContents("root");
   }, []);
 
   const fetchFolderContents = async (currentFolderId) => {
@@ -35,10 +36,21 @@ const Dashboard = () => {
         }
       );
       setCurrentFolderId(currentFolderId);
+      if (!folderStack.includes(currentFolderId)) {
+        setFolderStack((prevStack) => [...prevStack, currentFolderId]);
+      }
       setContents(response.data);
       setLoading(false);
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const handleBackButtonClick = () => {
+    if (folderStack.length > 0) {
+      folderStack.pop();
+      const lastFolderId = folderStack.pop();
+      fetchFolderContents(lastFolderId);
     }
   };
 
@@ -51,6 +63,8 @@ const Dashboard = () => {
       <div className="row">
         <FileExplorer
           contents={contents}
+          folderStack={folderStack}
+          onBackButtonClick={handleBackButtonClick}
           fetchFolderContents={fetchFolderContents}
           currentFolderId={currentFolderId}
         />

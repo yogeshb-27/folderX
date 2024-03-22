@@ -3,8 +3,14 @@ import React, { useState } from "react";
 import CreateFolderModal from "./CreateFolderModal";
 import UploadFileModal from "./UploadFileModal";
 
-const FileExplorer = ({ contents, fetchFolderContents, currentFolderId }) => {
-  const { folders, files } = contents;
+const FileExplorer = ({
+  contents,
+  fetchFolderContents,
+  currentFolderId,
+  folderStack,
+  onBackButtonClick,
+}) => {
+  const { folders, files, folderName } = contents;
 
   const [showCreateFolderModal, setShowCreateFolderModal] = useState(false);
   const [showUploadFileModal, setShowUploadFileModal] = useState(false);
@@ -42,6 +48,21 @@ const FileExplorer = ({ contents, fetchFolderContents, currentFolderId }) => {
           </ul>
         </nav>
 
+        {folderStack?.length >= 2 && (
+          <div className="mt-3 d-flex align-items-center justify-content-between">
+            <h2 className="fs-5 text-capitalize ms-4">
+              <i className="bx bxs-folder-open text-warning"></i> {folderName}
+            </h2>
+
+            <button
+              className="btn btn-link text-decoration-none text-dark "
+              onClick={onBackButtonClick}
+              tabIndex={0}
+            >
+              Back
+            </button>
+          </div>
+        )}
         {folders?.length === 0 && files?.length === 0 && (
           <p className="text-center mt-5 pt-5 h-100">
             Start adding files and folders to fill this space.
