@@ -2,28 +2,25 @@ import React, { useState } from "react";
 
 import CreateFolderModal from "./CreateFolderModal";
 import UploadFileModal from "./UploadFileModal";
+import { useFolder } from "../context/FolderContext";
 
-const FileExplorer = ({
-  contents,
-  fetchFolderContents,
-  currentFolderId,
-  folderStack,
-  onBackButtonClick,
-}) => {
+const FileExplorer = () => {
+  const {
+    loading,
+    contents,
+    folderStack,
+    fetchFolderContents,
+    handleBackButtonClick,
+  } = useFolder();
   const { folders, files, folderName } = contents;
 
   const [showCreateFolderModal, setShowCreateFolderModal] = useState(false);
   const [showUploadFileModal, setShowUploadFileModal] = useState(false);
 
-  const handleCreateFolderClick = () => {
-    setShowCreateFolderModal(true);
-  };
-  const handleUploadFileClick = () => {
-    setShowUploadFileModal(true);
-  };
-  const handleFolderClick = (folderId) => {
-    fetchFolderContents(folderId);
-  };
+  if (loading) {
+    return <p className=" col-lg-9 mt-5 pt-5  text-center">Loading ...</p>;
+  }
+
   return (
     <div className="col-lg-9">
       <div className="container">
@@ -32,7 +29,7 @@ const FileExplorer = ({
             <li className="nav-item my-2">
               <button
                 className="nav-link d-block"
-                onClick={handleUploadFileClick}
+                onClick={() => setShowUploadFileModal(true)}
               >
                 <i className="bx bx-cloud-upload"></i> Upload Files
               </button>
@@ -40,7 +37,7 @@ const FileExplorer = ({
             <li className="nav-item my-2">
               <button
                 className="nav-link d-block"
-                onClick={handleCreateFolderClick}
+                onClick={() => setShowUploadFileModal(true)}
               >
                 <i className="bx bx-folder"></i> Create Folder
               </button>
@@ -56,7 +53,7 @@ const FileExplorer = ({
 
             <button
               className="btn btn-link text-decoration-none text-dark "
-              onClick={onBackButtonClick}
+              onClick={handleBackButtonClick}
               tabIndex={0}
             >
               Back
@@ -76,7 +73,7 @@ const FileExplorer = ({
               {folders?.map((folder) => (
                 <div
                   key={folder._id}
-                  onClick={() => handleFolderClick(folder._id)}
+                  onClick={() => fetchFolderContents(folder._id)}
                   className="col-12 col-sm-6 col-md-4 col-lg-3 folder"
                 >
                   <i className="bx bxs-folder text-warning"></i>
@@ -98,15 +95,11 @@ const FileExplorer = ({
       <CreateFolderModal
         show={showCreateFolderModal}
         onHide={() => setShowCreateFolderModal(false)}
-        parentFolderId={currentFolderId}
-        fetchFolderContents={fetchFolderContents}
       />
 
       <UploadFileModal
         show={showUploadFileModal}
         onHide={() => setShowUploadFileModal(false)}
-        parentFolderId={currentFolderId}
-        fetchFolderContents={fetchFolderContents}
       />
     </div>
   );

@@ -9,19 +9,22 @@ import Navbar from "./components/Navbar";
 import { Toaster } from "react-hot-toast";
 import About from "./pages/About";
 import { AuthProvider } from "./context/AuthContext";
+import { FolderProvider } from "./context/FolderContext";
 const App = () => {
   return (
     <Router>
       <AuthProvider>
-        <Toaster />
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/about" element={<About />} />
-        </Routes>
+        <FolderProvider>
+          <Toaster />
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/about" element={<About />} />
+          </Routes>
+        </FolderProvider>
       </AuthProvider>
     </Router>
   );

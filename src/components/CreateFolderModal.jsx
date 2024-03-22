@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { useFolder } from "../context/FolderContext";
 
-const CreateFolderModal = ({
-  show,
-  onHide,
-  parentFolderId,
-  fetchFolderContents,
-}) => {
+const CreateFolderModal = ({ show, onHide }) => {
+  const { currentFolderId, fetchFolderContents } = useFolder();
   const [folderName, setFolderName] = useState("");
 
   const handleCreateFolder = async () => {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}folder/`,
-        { folderName, parentFolderId },
+        { folderName, parentFolderId: currentFolderId },
         {
           withCredentials: true,
           headers: {
@@ -26,7 +23,7 @@ const CreateFolderModal = ({
       toast.success("Folder created successfully");
       setFolderName("");
       onHide();
-      fetchFolderContents(parentFolderId);
+      fetchFolderContents(currentFolderId);
     } catch (error) {
       toast.error(error.response?.data?.error);
       console.log(error);

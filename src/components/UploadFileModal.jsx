@@ -3,15 +3,12 @@ import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useDropzone } from "react-dropzone";
 import { formatFileSize } from "../Utils/FileUtils";
+import { useFolder } from "../context/FolderContext";
 
-const UploadFileModal = ({
-  show,
-  onHide,
-  parentFolderId,
-  fetchFolderContents,
-}) => {
+const UploadFileModal = ({ show, onHide }) => {
   const [file, setFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const { currentFolderId, fetchFolderContents } = useFolder();
 
   const onDrop = (acceptedFiles) => {
     const selectedFile = acceptedFiles[0];
@@ -47,7 +44,7 @@ const UploadFileModal = ({
         };
 
         await axios.post(
-          `${import.meta.env.VITE_API_URL}file/${parentFolderId}`,
+          `${import.meta.env.VITE_API_URL}file/${currentFolderId}`,
           formData,
           config
         );
@@ -55,7 +52,7 @@ const UploadFileModal = ({
         setUploadProgress(0);
         toast.success("File uploaded successfully");
         onHide();
-        fetchFolderContents(parentFolderId);
+        fetchFolderContents(currentFolderId);
       } catch (error) {
         toast.error(error.response.data.error);
         setFile(null);
