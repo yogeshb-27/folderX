@@ -3,15 +3,22 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useFolder } from "../context/FolderContext";
 
-const CreateFolderModal = ({ show, onHide }) => {
+const RenameFolderModal = ({ show, onHide }) => {
   const { currentFolderId, fetchFolderContents } = useFolder();
-  const [folderName, setFolderName] = useState("");
+  const [newFolderName, setNewFolderName] = useState("");
 
-  const handleCreateFolder = async () => {
+  const handleRenameFolder = async () => {
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}folder/`,
-        { folderName, parentFolderId: currentFolderId },
+      // Validate new folder name (add additional validation as needed)
+      if (!newFolderName.trim()) {
+        toast.error("Folder name cannot be empty");
+        return;
+      }
+
+      // Make API call to rename the folder
+      await axios.patch(
+        `${import.meta.env.VITE_API_URL}folder/${currentFolderId}`,
+        { newFolderName },
         {
           withCredentials: true,
           headers: {
@@ -19,34 +26,30 @@ const CreateFolderModal = ({ show, onHide }) => {
           },
         }
       );
-
-      toast.success("Folder created successfully");
-      setFolderName("");
-      onHide();
+      toast.success("Folder renamed successfully");
       fetchFolderContents(currentFolderId);
+      // Close the modal
+      onHide();
     } catch (error) {
-      toast.error(error.response?.data?.error);
-      console.error(error);
+      console.error("Error renaming folder:", error);
+      toast.error("Error renaming folder. Please try again later.");
     }
   };
 
   return (
     <div
-      className={`modal ${show ? "d-block" : ""} `}
+      className={`modal ${show ? "d-block" : "d-none"}`}
       tabIndex="-1"
       role="dialog"
-      data-bs-backdrop="static"
     >
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Create Folder</h5>
-
+            <h5 className="modal-title">Rename Folder</h5>
             <button
               type="button"
               className="btn-close"
               onClick={onHide}
-              aria-label="Close"
             ></button>
           </div>
           <div className="modal-body">
@@ -56,16 +59,16 @@ const CreateFolderModal = ({ show, onHide }) => {
                   className="bx bxs-folder text-warning"
                   style={{ fontSize: "5rem" }}
                 ></i>
-                <small>{folderName}</small>
+                <small>{newFolderName}</small>
               </div>
               <input
                 type="text"
+                id="newFolderName"
                 className="form-control"
-                id="folderName"
-                placeholder="Enter folder name"
-                value={folderName}
-                onChange={(e) => setFolderName(e.target.value)}
+                value={newFolderName}
+                placeholder="Enter new folder name"
                 autoFocus
+                onChange={(e) => setNewFolderName(e.target.value)}
               />
             </div>
           </div>
@@ -80,9 +83,9 @@ const CreateFolderModal = ({ show, onHide }) => {
             <button
               type="button"
               className="btn btn-primary"
-              onClick={handleCreateFolder}
+              onClick={handleRenameFolder}
             >
-              Create
+              Rename
             </button>
           </div>
         </div>
@@ -91,4 +94,4 @@ const CreateFolderModal = ({ show, onHide }) => {
   );
 };
 
-export default CreateFolderModal;
+export default RenameFolderModal;

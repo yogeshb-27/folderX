@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 
 const FolderContext = createContext();
@@ -6,8 +6,11 @@ const FolderContext = createContext();
 export const FolderProvider = ({ children }) => {
   const [contents, setContents] = useState({});
   const [loading, setLoading] = useState(false);
-  const [currentFolderId, setCurrentFolderId] = useState();
+  const [currentFolderId, setCurrentFolderId] = useState(null);
   const [folderStack, setFolderStack] = useState([]);
+  useEffect(() => {
+    fetchFolderContents("root");
+  }, []);
 
   const fetchFolderContents = async (currentFolderId) => {
     try {
@@ -21,10 +24,10 @@ export const FolderProvider = ({ children }) => {
           },
         }
       );
-      setCurrentFolderId(currentFolderId);
       if (!folderStack.includes(currentFolderId)) {
-        setFolderStack((prevStack) => [...prevStack, currentFolderId]);
+        await setFolderStack((prevStack) => [...prevStack, currentFolderId]);
       }
+      setCurrentFolderId(currentFolderId);
       setContents(response.data);
       setLoading(false);
     } catch (error) {

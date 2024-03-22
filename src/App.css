@@ -81,3 +81,7 @@ input,textarea,select,.margin{
 .folder > i{
   font-size: 4rem;
 }
+
+.cursor-pointer{
+  cursor: pointer;
+}

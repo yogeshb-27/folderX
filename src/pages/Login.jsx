@@ -25,7 +25,6 @@ export default function Login() {
         { email, password },
         { withCredentials: true }
       );
-      // console.log(response);
       if (response.status === 200) {
         await login(response.data.token);
         navigate("/dashboard");

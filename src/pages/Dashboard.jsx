@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import StorageStats from "../components/StorageStats";
@@ -7,17 +7,12 @@ import { useFolder } from "../context/FolderContext";
 
 const Dashboard = () => {
   const { token } = useAuth();
-  const { fetchFolderContents } = useFolder();
   const navigate = useNavigate();
   useEffect(() => {
     if (!token) {
       navigate("/login");
     }
   }, [token, navigate]);
-
-  useEffect(() => {
-    fetchFolderContents("root");
-  }, []);
 
   return (
     <div className="container mx-auto">
