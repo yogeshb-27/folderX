@@ -15,7 +15,8 @@ import {
 
 const FileList = () => {
   const navigate = useNavigate();
-  const { contents, currentFolderId, fetchFolderContents } = useFolder();
+  const { contents, currentFolderId, fetchFolderContents, fetchUsedStorage } =
+    useFolder();
   const { files } = contents;
   const [showRenameFileModal, setShowRenameFileModal] = useState(false);
   const [selectedFileId, setSelectedFileId] = useState(null);
@@ -39,6 +40,7 @@ const FileList = () => {
       );
       toast.success(response.data.message);
       fetchFolderContents(currentFolderId);
+      fetchUsedStorage();
     } catch (error) {
       toast.error("Error deleting file");
       console.error(error);
@@ -70,7 +72,6 @@ const FileList = () => {
   };
 
   const previewFileSupported = [
-    "pdf",
     ...textFileTypes,
     ...videoFileTypes,
     ...imageFileTypes,

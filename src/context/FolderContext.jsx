@@ -8,8 +8,17 @@ export const FolderProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [currentFolderId, setCurrentFolderId] = useState(null);
   const [folderStack, setFolderStack] = useState([]);
+  const [storageStats, setStorageStats] = useState({
+    total: { size: 0, count: 0 },
+    images: { size: 0, count: 0 },
+    videos: { size: 0, count: 0 },
+    docs: { size: 0, count: 0 },
+    other: { size: 0, count: 0 },
+  });
+
   useEffect(() => {
     fetchFolderContents("root");
+    fetchUsedStorage();
   }, []);
 
   const fetchFolderContents = async (currentFolderId) => {
@@ -43,6 +52,25 @@ export const FolderProvider = ({ children }) => {
     }
   };
 
+  const fetchUsedStorage = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}auth/stats`,
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      if (response.data.storageStats !== null) {
+        setStorageStats(response.data.storageStats);
+      }
+    } catch (error) {
+      console.error("Error calculating used storage:", error);
+    }
+  };
+
   return (
     <FolderContext.Provider
       value={{
@@ -50,6 +78,8 @@ export const FolderProvider = ({ children }) => {
         folderStack,
         loading,
         contents,
+        storageStats,
+        fetchUsedStorage,
         handleBackButtonClick,
         fetchFolderContents,
       }}

@@ -8,7 +8,8 @@ import { useFolder } from "../context/FolderContext";
 const UploadFileModal = ({ show, onHide }) => {
   const [file, setFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const { currentFolderId, fetchFolderContents } = useFolder();
+  const { currentFolderId, fetchFolderContents, fetchUsedStorage } =
+    useFolder();
 
   const onDrop = (acceptedFiles) => {
     const selectedFile = acceptedFiles[0];
@@ -53,6 +54,7 @@ const UploadFileModal = ({ show, onHide }) => {
         toast.success("File uploaded successfully");
         onHide();
         fetchFolderContents(currentFolderId);
+        fetchUsedStorage();
       } catch (error) {
         toast.error(error.response.data.error);
         setFile(null);

@@ -15,6 +15,7 @@ const FileExplorer = () => {
     fetchFolderContents,
     handleBackButtonClick,
     currentFolderId,
+    fetchUsedStorage,
   } = useFolder();
   const { folders, files, folderName } = contents;
 
@@ -35,6 +36,7 @@ const FileExplorer = () => {
         }
       );
       toast.success(response.data.message);
+      fetchUsedStorage();
       handleBackButtonClick();
     } catch (error) {
       toast.error("Error deleting folder");
@@ -43,7 +45,7 @@ const FileExplorer = () => {
   };
 
   return (
-    <div className="col-lg-9">
+    <div className="col-lg-9 mb-5 pb-5">
       {loading ? (
         <p className=" col-lg-9 mt-5 pt-5  text-center">Loading ...</p>
       ) : (

@@ -74,7 +74,7 @@ const FilePreview = () => {
       >
         Back
       </button>
-      <p className="text-center mt-5 pt-5 ">
+      <p className="text-center mt-5">
         Name : {getFileIcon(fileDetails.type)} {fileDetails.name}
       </p>
       <small className="text-muted text-center mb-4">
@@ -91,14 +91,6 @@ const FilePreview = () => {
             {getTextContent(fileDetails.content)}
           </SyntaxHighlighter>
         </div>
-      )}
-      {fileDetails.mimeType === "application/pdf" && (
-        <iframe
-          title="PDF Preview"
-          src={`data:application/pdf;base64,${fileDetails.content}`}
-          width="100%"
-          height="600px"
-        ></iframe>
       )}
       <div
         className="d-block mb-4 mx-auto"
