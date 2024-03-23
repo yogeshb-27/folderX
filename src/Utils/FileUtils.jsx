@@ -8,6 +8,13 @@ export const formatFileSize = (sizeInBytes) => {
   }
 };
 
+export const truncateFileName = (name, maxLength) => {
+  if (name.length <= maxLength) {
+    return name;
+  }
+  return name.substring(0, maxLength - 3) + "...";
+};
+
 export const getFileIcon = (fileType) => {
   switch (fileType) {
     case "pdf":

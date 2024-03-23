@@ -11,6 +11,7 @@ import {
   imageFileTypes,
   videoFileTypes,
   audioFileTypes,
+  truncateFileName,
 } from "../Utils/FileUtils";
 
 const FileList = () => {
@@ -98,42 +99,44 @@ const FileList = () => {
           {files.map((file, index) => (
             <tr key={index}>
               <td
-                className="cursor-pointer file-icon"
+                className="cursor-pointer file-name"
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"
                 tabIndex={0}
                 title={`${file.name}`}
                 onClick={() => handleFileClick(file._id, file.type)}
               >
-                {getFileIcon(file.type)} {file.name}
+                {getFileIcon(file.type)} {truncateFileName(file.name, 20)}
               </td>
               <td>{file.type}</td>
               <td>{formatFileSize(file.size)}</td>
               <td>
-                <i
-                  className="bx bx-rename text-muted cursor-pointer me-2"
-                  data-bs-toggle="tooltip"
-                  data-bs-placement="top"
-                  title="Rename File"
-                  tabIndex={0}
-                  onClick={() => handleRenameFileClick(file._id)}
-                ></i>
-                <i
-                  className="bx bx-trash-alt text-danger cursor-pointer me-2"
-                  data-bs-toggle="tooltip"
-                  data-bs-placement="top"
-                  title="Delete File"
-                  tabIndex={0}
-                  onClick={() => handleDeleteFileClick(file._id)}
-                ></i>
-                <i
-                  className="bx bx-download text-muted cursor-pointer"
-                  data-bs-toggle="tooltip"
-                  data-bs-placement="top"
-                  title="Download File"
-                  tabIndex={0}
-                  onClick={() => handleDownloadFileClick(file._id, file.name)}
-                ></i>
+                <div className="d-block">
+                  <i
+                    className="bx bx-rename text-muted cursor-pointer me-2"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    title="Rename File"
+                    tabIndex={0}
+                    onClick={() => handleRenameFileClick(file._id)}
+                  ></i>
+                  <i
+                    className="bx bx-trash-alt text-danger cursor-pointer me-2"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    title="Delete File"
+                    tabIndex={0}
+                    onClick={() => handleDeleteFileClick(file._id)}
+                  ></i>
+                  <i
+                    className="bx bx-download text-muted cursor-pointer"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    title="Download File"
+                    tabIndex={0}
+                    onClick={() => handleDownloadFileClick(file._id, file.name)}
+                  ></i>
+                </div>
               </td>
             </tr>
           ))}

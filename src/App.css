@@ -86,6 +86,12 @@ input,textarea,select,.margin{
 .cursor-pointer{
   cursor: pointer;
 }
-.file-icon i {
+.file-name i {
   font-size: 1.25rem;
+}
+.file-name{
+  min-width: 10rem;
+}
+td{
+  min-width: 5rem;
 }
