@@ -38,10 +38,10 @@ export const FolderProvider = ({ children }) => {
       }
       setCurrentFolderId(currentFolderId);
       setContents(response.data);
-      setLoading(false);
     } catch (error) {
       console.error(error);
     }
+    setLoading(false);
   };
 
   const handleBackButtonClick = () => {
