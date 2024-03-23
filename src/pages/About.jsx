@@ -8,12 +8,15 @@ const About = () => {
       </h2>
       <h3 className="fs-5 md:fs-4 display-6">Description:</h3>
       <p>
-        FolderX is a cloud-based file management system that provides users with
-        50MB of cloud storage, keyboard shortcuts, search options, and
-        drag-and-drop file upload functionality. It aims to streamline digital
-        workspace organization and management by offering efficient file
-        handling features. With FolderX, users can effortlessly manage their
-        digital assets and optimize their workflow.
+        FolderX is a cutting-edge cloud-based file management system crafted to
+        revolutionize your digital workspace. Seamlessly combining efficiency,
+        security, and simplicity, FolderX empowers users to effortlessly
+        organize, and manage their digital assets with unparalleled ease.
+        <br />
+        With FolderX, users can enjoy a comprehensive suite of features designed
+        to enhance productivity and streamline workflow. From intuitive folder
+        management and lightning-fast file uploads to responsive design, FolderX
+        is the ultimate solution for modern-day file management needs.
       </p>
       <h3 className="fs-5 md:fs-4 display-6">Features:</h3>
       <ul>
